@@ -88,7 +88,16 @@ function addDepartment() {
     })
 }
 function addEmployee() {
+    currentRoles = [];
+    db.query("SELECT * FROM roles", (err, results) => {
+        // console.log(results);
+        for (i = 0; i < results.length; i++) {
+            currentRoles.push(results[i].name)
+        }
+    })
     inquirer.prompt([
+
+
         {
             type: "input",
             message: "What is the employee's first name?",
@@ -102,17 +111,32 @@ function addEmployee() {
         {
             type: "list",
             message: "What is the employee's role?",
-            choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Account Manager", "Accountant", "Legal Team Leader", "Laywer", "Sales Lead"],
-            name: "newEmpRole"
+            choices: currentRoles,
+            name: "role"
         },
         {
             type: "list",
             message: "Who is the employee's manager?",
-            choices: ["None", "Jackie Chan", "Harlow Girl", "John Doe", "Mike Lebowski", "Connor M", "Andy L"],
-            name: "newEmpManager"
+            choices: "Select a manager ID, enter 0 for no manager",
+            name: "manager"
         }
     ]).then((results) => {
-        db.query("INSERT INTO employee (first_name, last_name, manager_id) VALUES (?)", ([results.firstName, results.lastName, results.newEmpManager]), function (err, results) {
+        let roleId = 0;
+        for (i = 0; i < results.length; i++) {
+            if (results.role == results[i].title) {
+                roleId = results[i].department_id;
+            }
+        }
+
+        let manager = 0;
+
+        if (results.Manager == 0) {
+            manager = null;
+        } else {
+            manager = results.Manager;
+        }
+
+        db.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?)", [results.fistName, results.lastName, results.roleId, results.manager_id], function (err, results) {
             console.log(results);
             initalPrompt();
         })
@@ -120,11 +144,11 @@ function addEmployee() {
 };
 function addRole() {
     // creates an active log to be able to be selecting from all departments including any added
-    currentDeparments = [];
+    currentDepartments = [];
     db.query("SELECT * FROM department", (err, results) => {
         // console.log(results);
         for (i = 0; i < results.length; i++) {
-            currentDeparments.push(results[i].name)
+            currentDepartments.push(results[i].name)
         }
     })
     inquirer.prompt([
@@ -141,11 +165,17 @@ function addRole() {
         {
             type: "list",
             message: "Which department does that role belong to?",
-            choices: currentDeparments,
+            choices: currentDepartments,
             name: "department"
         }
     ]).then((results) => {
-        db.query("INSERT INTO role (title, salary, department) VALUES (?, ?, ?)", [results.title, results.salary, results.department], (err, results) => {
+        let department_id = 0;
+        for (i = 0; i < results.length; i++) {
+            if (results.department == results[i].name) {
+                department_id = results[i].id;
+            }
+        }
+        db.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [results.title, results.salary, results.department_id], (err, results) => {
             console.log(results);
             initalPrompt();
         })
