@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const Sequelize = require('sequelize');
+const { INITIALLY_DEFERRED } = require("sequelize/types/deferrable");
 require('dotenv').config();
 
 const sequelize = new Sequelize(
@@ -55,7 +56,7 @@ function showEmployees() {
         "SELECT employee.id, employee.first_name, employee.last_name, role.title AS title, department.name AS department, role.salary, employee.manager_id  FROM((employee JOIN role ON employee.role_id = role.id) JOIN department ON department.id = role.department_id) ",
         (err, results) => {
             console.table(results);
-            showMenu();
+            showPrompts();
         }
     );
 }
@@ -65,7 +66,7 @@ function showRoles() {
         "SELECT role.id, role.title, department.name AS department, role.salary FROM role JOIN department ON role.department_id = department.id",
         (err, results) => {
             console.table(results);
-            showMenu();
+            showPrompts();
         }
     );
 }
@@ -78,5 +79,7 @@ function showDepartments() {
         }
     )
 }
+
+init();
 
 module.exports = sequelize;
