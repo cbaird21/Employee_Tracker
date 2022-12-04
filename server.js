@@ -1,5 +1,6 @@
 // Import the connection object
-
+const inquirer = require("inquirer");
+const mysql = require("mysql2");
 // custom module
 const sequelize = require('./config/connection');
 
