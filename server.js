@@ -58,7 +58,7 @@ function showEmployees() {
 }
 function showDepartments() {
     db.query(
-        "SELECT department * FROM department", (err, results) => {
+        "SELECT * FROM department", (err, results) => {
             console.table(results);
             initalPrompt();
         }
