@@ -131,7 +131,7 @@ function addRole() {
         {
             type: "input",
             message: "What is the name of the role?",
-            name: "name"
+            name: "title"
         },
         {
             type: "input",
@@ -145,7 +145,7 @@ function addRole() {
             name: "department"
         }
     ]).then((results) => {
-        db.query(`INSERT INTO role (title, salary, department_id) VALUES (${results.name}, ${results.salary}, ${results.department});`, (err, results) => {
+        db.query("INSERT INTO role (title, salary, department) VALUES (?, ?, ?)", [results.title, results.salary, results.department], (err, results) => {
             console.log(results);
             initalPrompt();
         })
