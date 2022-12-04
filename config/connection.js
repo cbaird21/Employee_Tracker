@@ -1,10 +1,10 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const Sequelize = require('sequelize');
-const { INITIALLY_DEFERRED } = require("sequelize/types/deferrable");
 require('dotenv').config();
 const consoleTable = require("console.table");
-
+const fs = require("fs");
+const Connection = require("mysql2/typings/mysql/lib/Connection");
 const sequelize = new Sequelize(
     // Database name
     process.env.DB_NAME,
@@ -18,9 +18,30 @@ const sequelize = new Sequelize(
         port: 3306
     }
 );
+// prompts options choice
+const initalPrompt = () => {
+    return inquirer.prompt([
+        {
+            type: "list",
+            message: "What would you like to do?",
+            choices: [
+                "View all departments",
+                "View all employees",
+                "View all roles",
+                "Add a department",
+                "Add an Employee",
+                "Add a role",
+                "Update an employee",
+                "Quit"
+            ],
+            name: "choice",
+        }
+    ]
+    )
+}
 // create prompt questions
 function showPrompts() {
-    inquirer.prompt(listOptions).then((response) => {
+    inquirer.prompt(initalPrompt).then((response) => {
         if (Response.choice === "View all departments") { showDepartments(); }
         if (Response.choice === "View all employees") { showEmployees(); }
         if (Response.choice === "View all Roles") { showRoles(); }
@@ -31,21 +52,26 @@ function showPrompts() {
     })
 }
 
-const addDepartment = [
-    {
-        type: "input",
-        message: "What is the name of the department?",
-        name: "departmentName"
-    }
-]
-// create function to add department to the database
-function addDepartment(){
-    inquirer.prompt(addDepartment).then((response)=>{
-        const department = new department(
-            response.name
-        )
+function addDepartment() {
+    return inquirer.prompt([
+        {
+            type: "input",
+            message: "What is the name of the department?",
+            name: "departmentName"
+        }
+    ]).then((results) => {
+            db.query("INSERT INTO department(name) VALUES(`${results.department_name})`, (err,results)
     })
-}
+
+
+// create function to add department to the database
+// function addDepartment() {
+//     inquirer.prompt(addDepartment).then((response) => {
+//         const department = new department(
+//             response.name
+//         )
+//     })
+// }
 
 const addEmployee = [
     {
@@ -61,20 +87,20 @@ const addEmployee = [
     {
         type: "list",
         message: "What is the employee's role?",
-        choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Account Manager", "Accountant","Legal Team Leader", "Laywer", "Sales Lead"],
+        choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Account Manager", "Accountant", "Legal Team Leader", "Laywer", "Sales Lead"],
         name: "newEmpRole"
     },
     {
         type: "list",
         message: "Who is the employee's manager?",
-        choices: ["None", "Jackie Chan", "Harlow Girl", "John Doe","Mike Lebowski","Connor M", "Andy L"],
+        choices: ["None", "Jackie Chan", "Harlow Girl", "John Doe", "Mike Lebowski", "Connor M", "Andy L"],
         name: "newEmpManager"
     }
 ]
 // create function to add employee
-function addEmployee(){}
+// function addEmployee() { }
 
-const addRole =[
+const addRole = [
     {
         type: "input",
         message: "What is the name of the role?",
@@ -92,9 +118,9 @@ const addRole =[
     }
 ]
 // create function to add to role to database
-function addRole(){
+// function addRole() {
 
-}
+// }
 
 const updateEmployeeRole = [
     {
@@ -103,7 +129,7 @@ const updateEmployeeRole = [
         // should i be pulling the table data for this ?
         choices: ["Jackie Chan", "Rosco Dash", "Harlow Girl", "John Doe", "Mike Lebowski", "Jenn H", "Connor M", "Cali L", "Andy L"],
         name: "updateThisEmp"
-    }, 
+    },
     {
         type: "list",
         message: "Which role do you want to assign the selected employee?",
@@ -113,28 +139,10 @@ const updateEmployeeRole = [
 
 ]
 // create function to update employe
-function updateEmployeeRole(){}
+// function updateEmployeeRole() { }
 
 
 
-// prompts options choice
-const listOptions = [
-    {
-        type: "list",
-        message: "What would you like to do?",
-        choices: [
-            "View all departments",
-            "View all employees",
-            "View all roles",
-            "Add a department",
-            "Add an Employee",
-            "Add a role",
-            "Update an employee",
-            "Quit"
-        ],
-        name: "choice",
-    }
-];
 //makes a query and returns back employee table
 function showEmployees() {
     db.query(
