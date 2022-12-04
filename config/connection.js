@@ -3,6 +3,7 @@ const mysql = require("mysql2");
 const Sequelize = require('sequelize');
 const { INITIALLY_DEFERRED } = require("sequelize/types/deferrable");
 require('dotenv').config();
+const consoleTable = require("console.table");
 
 const sequelize = new Sequelize(
     // Database name
@@ -26,17 +27,93 @@ function showPrompts() {
         if (Response.choice === "Add a department") { addDepartment(); }
         if (Response.choice === "Add an Employee") { addEmployee(); }
         if (Response.choice === "Add a role") { addRole(); }
-        if (Response.choice === "Update an employee") { updateEmployee(); }
+        if (Response.choice === "Update an employee") { updateEmployeeRole(); }
     })
 }
-// create function to add department
-function addDepartment(){}
 
+const addDepartment = [
+    {
+        type: "input",
+        message: "What is the name of the department?",
+        name: "departmentName"
+    }
+]
+// create function to add department to the database
+function addDepartment(){
+    inquirer.prompt(addDepartment).then((response)=>{
+        const department = new department(
+            response.name
+        )
+    })
+}
+
+const addEmployee = [
+    {
+        type: "input",
+        message: "What is the employee's first name?",
+        name: "firstName"
+    },
+    {
+        type: "input",
+        message: "What is the employee's last name?",
+        name: "lastName"
+    },
+    {
+        type: "list",
+        message: "What is the employee's role?",
+        choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Account Manager", "Accountant","Legal Team Leader", "Laywer", "Sales Lead"],
+        name: "newEmpRole"
+    },
+    {
+        type: "list",
+        message: "Who is the employee's manager?",
+        choices: ["None", "Jackie Chan", "Harlow Girl", "John Doe","Mike Lebowski","Connor M", "Andy L"],
+        name: "newEmpManager"
+    }
+]
 // create function to add employee
 function addEmployee(){}
 
+const addRole =[
+    {
+        type: "input",
+        message: "What is the name of the role?",
+        name: "roleName"
+    },
+    {
+        type: "input",
+        message: "What is the salary of the role?",
+        name: "roleSalary"
+    },
+    {
+        type: "list",
+        message: "Which department does that role belong to?",
+        choices: ["Engineering", "Finance", "Legal", "Sales"]
+    }
+]
+// create function to add to role to database
+function addRole(){
+
+}
+
+const updateEmployeeRole = [
+    {
+        type: "list",
+        message: "Which employee's role do you want to update?",
+        // should i be pulling the table data for this ?
+        choices: ["Jackie Chan", "Rosco Dash", "Harlow Girl", "John Doe", "Mike Lebowski", "Jenn H", "Connor M", "Cali L", "Andy L"],
+        name: "updateThisEmp"
+    }, 
+    {
+        type: "list",
+        message: "Which role do you want to assign the selected employee?",
+        // should these choices be db queries?
+        choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Account Manager", "Accountant", "Legal Team Leader", "Laywer", "Sales Lead"],
+    }
+
+]
 // create function to update employe
-function updateEmployee(){}
+function updateEmployeeRole(){}
 
 
 
