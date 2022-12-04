@@ -29,6 +29,14 @@ function showPrompts() {
         if (Response.choice === "Update an employee") { updateEmployee(); }
     })
 }
+// create function to add department
+function addDepartment(){}
+
+// create function to add employee
+function addEmployee(){}
+
+// create function to update employe
+function updateEmployee(){}
 
 
 
