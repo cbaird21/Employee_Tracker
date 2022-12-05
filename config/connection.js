@@ -29,22 +29,7 @@ const Connection = require("mysql2/typings/mysql/lib/Connection");
 
 // }
 
-const updateEmployeeRole = [
-    {
-        type: "list",
-        message: "Which employee's role do you want to update?",
-        // should i be pulling the table data for this ?
-        choices: ["Jackie Chan", "Rosco Dash", "Harlow Girl", "John Doe", "Mike Lebowski", "Jenn H", "Connor M", "Cali L", "Andy L"],
-        name: "updateThisEmp"
-    },
-    {
-        type: "list",
-        message: "Which role do you want to assign the selected employee?",
-        // should these choices be db queries?
-        choices: ["Sales Lead", "Salesperson", "Lead Engineer", "Account Manager", "Accountant", "Legal Team Leader", "Laywer", "Sales Lead"],
-    }
 
-]
 // create function to update employe
 // function updateEmployeeRole() { }
 

@@ -89,24 +89,22 @@ function addDepartment() {
 }
 function addEmployee() {
     currentRoles = [];
-    db.query("SELECT * FROM roles", (err, results) => {
-        // console.log(results);
+    db.query("SELECT * FROM role", (err, results) => {
+        console.log(results);
         for (i = 0; i < results.length; i++) {
-            currentRoles.push(results[i].name)
+            currentRoles.push(results[i].title);
         }
     })
-    inquirer.prompt([
-
-
+    const addingEmployeeQuestions = [
         {
             type: "input",
-            message: "What is the employee's first name?",
-            name: "firstName"
+            message: "What is the Employees first name?",
+            name: "firstName",
         },
         {
             type: "input",
-            message: "What is the employee's last name?",
-            name: "lastName"
+            message: "What is the Employees last name?",
+            name: "LastName",
         },
         {
             type: "list",
@@ -115,12 +113,13 @@ function addEmployee() {
             name: "role"
         },
         {
-            type: "list",
-            message: "Who is the employee's manager?",
-            choices: "Select a manager ID, enter 0 for no manager",
-            name: "manager"
-        }
-    ]).then((results) => {
+            type: "input",
+            message: "Select a manager ID, enter 0 for no manager",
+            name: "Manager",
+        },
+    ];
+
+    inquirer.prompt(addingEmployeeQuestions).then((results) => {
         let roleId = 0;
         for (i = 0; i < results.length; i++) {
             if (results.role == results[i].title) {
@@ -136,12 +135,14 @@ function addEmployee() {
             manager = results.Manager;
         }
 
-        db.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?)", [results.fistName, results.lastName, results.roleId, results.manager_id], function (err, results) {
-            console.log(results);
-            initalPrompt();
-        })
+        db.query(
+            "INSERT INTO employee (first_name, last_name, manager_id, role_id) VALUES (?, ?, ?, ?)", [results.firstName, results.lastName, results.manager, results.roleId],
+            (err, results) => {
+                console.log(results);
+                initalPrompt();
+            })
     })
-};
+}
 function addRole() {
     // creates an active log to be able to be selecting from all departments including any added
     currentDepartments = [];
@@ -183,3 +184,38 @@ function addRole() {
 }
 
 initalPrompt();
+//updates an employees role
+// function updateEmployee() {
+//     roleList = [];
+//     db.query("SELECT * FROM role", (err, results) => {
+//         for (i = 0; i < results.length; i++) {
+//             roleList.push(results[i].name);
+//         }
+//     });
+//     employeeList = [];
+//     db.query("SELECT * FROM employee", (err, results) => {
+//         for (i = 0; i < results.length; i++) {
+//             employeeList.push(results[i].first_name);
+//         }
+//     });
+
+//     const updateEmployeeQuestions = [
+//         {
+//             type: "list",
+//             message: "Whos role will be updated?",
+//             choices: employeeList,
+//             name: "selectedEmployee",
+//         },
+//         {
+//             type: "list",
+//             message: "What will their new role be?",
+//             choices: roleList,
+//             name: "newRole",
+//         },
+//     ];
+//     inquirer.promt(updateEmployeeQuestions).then((Response) => {
+//         console.log(Response);
+//     });
+
+//     // db.query(`UPDATE employee SET role_id = ? WHERE id = ?`);
+// }
