@@ -1,14 +1,15 @@
-# Employee Tracker  
+# Employee Tracker
 
-Using Content Management Systems. Databases using nodes.js, inquirer, MySQL  
+Using Content Management Systems. Databases using nodes.js, inquirer, MySQL
 
-## User Story  
+## User Story
+
 AS A business owner  
 I WANT to be able to view and manage the departments, roles, and employees in my company  
-SO THAT I can organize and plan my business  
+SO THAT I can organize and plan my business
 
-  
-## Acceptance Criteria  
+## Acceptance Criteria
+
 GIVEN a command-line application that accepts user input  
 WHEN I start the application  
 THEN I am presented with the following options: view all departments, view all roles, view all employees, add a department, add a role, add an employee, and update an employee role  
@@ -25,4 +26,20 @@ THEN I am prompted to enter the name, salary, and department for the role and th
 WHEN I choose to add an employee  
 THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database  
 WHEN I choose to update an employee role  
-THEN I am prompted to select an employee to update and their new role and this information is updated in the database  
+THEN I am prompted to select an employee to update and their new role and this information is updated in the database
+
+## Deployed Application
+
+GitHub Repo:
+
+https://github.com/cbaird21/Employee_Tracker
+
+Screencastify:
+
+https://drive.google.com/file/d/1t4_gT6CboGx2IoG3NbFRhKzFjLYnywgl/view
+
+Image of Table
+
+![Alt text](assets/workbench%20tables.GIF)
+
+![Alt text](assets/workbench%20table%20.1.GIF)
